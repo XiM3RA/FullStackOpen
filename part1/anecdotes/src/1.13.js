@@ -31,29 +31,13 @@ const App = () => {
       copy[selected] += 1
       setVotes(copy)
   }
-  const Results = () => {
-      const copy = Object.values(votes)
-      const max = Math.max(...copy)
-      const ind = copy.indexOf(max)
-      if (max === 0) {
-          return null }
-      return (
-          <>
-      <p>{anecdotes[ind]}</p>
-      <p>has {max} votes</p>
-          </>
-      )
-  }
 
   return (
     <div>
-      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <Button handleClick={handleVote} text="vote" />
       <Button handleClick={handleClick} text="next anecdote" />
-      <h1>Anecdote with the most votes</h1>
-      <Results />
     </div>
   )
 }
