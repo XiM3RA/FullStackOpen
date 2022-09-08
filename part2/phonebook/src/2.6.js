@@ -12,13 +12,8 @@ const App = () => {
     const noteObject = {
       name: newName,
     };
-    if (persons.some((e) => e.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`);
-      setNewName("");
-    } else {
-      setPersons(persons.concat(noteObject));
-      setNewName("");
-    }
+    setPersons(persons.concat(noteObject));
+    setNewName("");
   };
 
   const handleNoteChange = (event) => {
