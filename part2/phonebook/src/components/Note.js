@@ -1,7 +1,9 @@
-const Note = ({ note }) => {
+const Note = (props) => {
   return (
     <>
-      <li>{note}</li>
+      <p>
+        {props.name} {props.number}
+      </p>
     </>
   );
 };
