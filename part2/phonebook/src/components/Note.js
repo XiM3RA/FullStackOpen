@@ -1,10 +1,13 @@
-const Note = (props) => {
+const Note = ({ personsToShow, remove }) => {
   return (
-    <>
-      <p>
-        {props.name} {props.number}
-      </p>
-    </>
+    <div>
+      {personsToShow.map((person) => (
+        <div key={person.name}>
+          {person.name} {person.number}{" "}
+          <button onClick={() => remove(person.id, person.name)}>delete</button>
+        </div>
+      ))}
+    </div>
   );
 };
 
