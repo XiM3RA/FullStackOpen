@@ -31,6 +31,11 @@ let persons = [
   },
 ];
 
+const generateId = () => {
+  const maxId = persons.length > 0 ? Math.max(...persons.map((n) => n.id)) : 0;
+  return Math.floor(Math.random() * (1000000000 - maxId) + maxId);
+};
+
 app.get("/info", (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length}  people</p>
               <p>${new Date()}</p>`);
@@ -38,6 +43,25 @@ app.get("/info", (req, res) => {
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.post("/api/persons", (request, response) => {
+  const body = request.body;
+
+  if (!body.name) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,
+  };
+
+  persons = persons.concat(person);
+  response.json(person);
 });
 
 app.get("/api/persons/:id", (request, response) => {
