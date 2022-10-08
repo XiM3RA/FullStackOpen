@@ -48,9 +48,15 @@ app.get("/api/persons", (req, res) => {
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  if (!body.name) {
+  if (!body.name || !body.number) {
     return response.status(400).json({
-      error: "content missing",
+      error: "name or number missing",
+    });
+  }
+
+  if (persons.filter((i) => i.name == body.name)) {
+    return response.status(400).json({
+      error: "name already listed",
     });
   }
 
