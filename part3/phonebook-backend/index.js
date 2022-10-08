@@ -1,7 +1,21 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
 
 app.use(express.json());
+
+/* Middleware morgan software, for displaying HTML requests on the console */
+morgan.token("post", function (req) {
+  if (req.method === "POST") return JSON.stringify(req.body);
+  else return "";
+});
+
+morgan.format(
+  "postFormat",
+  ":method :url :status :res[content-length] - :response-time ms :post"
+);
+
+app.use(morgan("postFormat"));
 
 let persons = [
   {
@@ -54,7 +68,7 @@ app.post("/api/persons", (request, response) => {
     });
   }
 
-  if (persons.filter((i) => i.name == body.name)) {
+  if (persons.filter((i) => i.name == body.name).length > 0) {
     return response.status(400).json({
       error: "name already listed",
     });
