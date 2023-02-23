@@ -1,7 +1,8 @@
-POST http://localhost:3001/api/persons/
+GET https://late-smoke-4209.fly.dev/api/persons
 Content-Type: application/json
 
 {
     "name": "jksdfjkwej",
-    "number": 666
+    "number": 666,
+    "id": 6,
 }
