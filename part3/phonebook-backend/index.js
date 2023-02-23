@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const morgan = require("morgan");
 
 app.use(express.json());
+app.use(cors());
+app.use(express.static('build'));
 
 /* Middleware morgan software, for displaying HTML requests on the console */
 morgan.token("post", function (req) {
