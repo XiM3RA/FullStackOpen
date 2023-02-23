@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:ui": "rm -rf build && cd ../../part2/notes-frontend/ && npm run build && cp -r build ../../part3/testing",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +12,9 @@
   "author": "Matti Luukkainen",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.1"
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "mongoose": "^6.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

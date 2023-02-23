@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require('cors')
-const mongoose = require('mongoose')
 
 app.use(cors());
 app.use(express.json());
@@ -89,12 +88,12 @@ app.put("/api/notes/:id", (request, response) => {
     content: body.content,
     important: body.important || false,
     date: new Date(),
-    id: id,
+    id: generateId(),
   };
 
+  notes = notes.concat(newNote);
   response.json(newNote);
-}
-)
+})
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
