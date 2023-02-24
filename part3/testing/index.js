@@ -1,15 +1,19 @@
 const express = require("express");
 const app = express();
 const cors = require('cors')
-const mongoose = require('mongoose')
+const Note = require('./models/note')
 
 app.use(cors());
 app.use(express.json());
 // For the static build directory
 app.use(express.static('build'))
 
+const url =
+    `mongodb+srv://fullstack:qRefYQqEn15ZMmjs@cluster0.zcssndw.mongodb.net/noteApp?retryWrites=true&w=majority`
+
+
 let notes = [
-  {
+      {
     id: 1,
     content: "HTML is easy",
     date: "2022-01-10T17:30:31.098Z",
@@ -27,6 +31,7 @@ let notes = [
     date: "2022-01-10T19:20:14.298Z",
     important: true,
   },
+
 ];
 
 const generateId = () => {
@@ -62,7 +67,9 @@ app.get("/", (req, res) => {
 
 /* This route responds with a JSON format string */
 app.get("/api/notes", (req, res) => {
-  res.json(notes);
+  Note.find({}).then(notes => {
+      res.json(notes)
+  })
 });
 
 /* Handles all HTTP GET requests to /api/notes/SOMETHING where SOMETHING is
