@@ -4,10 +4,10 @@ const cors = require("cors");
 const morgan = require("morgan");
 require("dotenv").config();
 
-app.use(express.json());
 const Entry = require("./models/entry");
 app.use(cors());
 app.use(express.static("build"));
+app.use(express.json());
 
 /* Middleware morgan software, for displaying HTML requests on the console */
 morgan.token("post", function (req) {
@@ -102,6 +102,18 @@ app.get("/api/persons/:id", (request, response) => {
   }
 });
 
+//app.get("/api/notes/:id", (request, response, next) => {
+//  Entry.findById(request.params.id)
+//    .then((person) => {
+//      if (person) {
+//        response.json(person);
+//      } else {
+//        response.status(404).end();
+//      }
+//    })
+//    .catch((error) => next(error));
+//});
+
 //app.delete("/api/persons/", (request, response) => {
 //  const body = request.body;
 //  if (body.id) {
@@ -123,7 +135,24 @@ app.delete("/api/persons/:id", (request, response) => {
   }
 });
 
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Define our error handling middleware
+const errorHandler = (error, request, response, next) => {
+  console.lerror(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+app.use(errorHandler);
