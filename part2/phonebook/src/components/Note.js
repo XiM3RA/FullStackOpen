@@ -3,7 +3,7 @@ const Note = ({ personsToShow, remove }) => {
     <div>
       {personsToShow.map((person) => (
         <div key={person.name}>
-          {person.name} {person.number}{" "}
+          {person.name} {person.phoneNumber}{" "}
           <button onClick={() => remove(person.id, person.name)}>delete</button>
         </div>
       ))}

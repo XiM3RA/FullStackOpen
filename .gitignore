@@ -1,3 +1,5 @@
 PAT.txt
 node_modules/
 TimeSpent
+.env
+.dockerignore

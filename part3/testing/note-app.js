@@ -1,12 +1,13 @@
+// Working note app without use of MongoDB
+
 const express = require("express");
 const app = express();
-const cors = require('cors')
-const mongoose = require('mongoose')
+const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
 // For the static build directory
-app.use(express.static('build'))
+app.use(express.static("build"));
 
 let notes = [
   {
@@ -81,9 +82,9 @@ app.get("/api/notes/:id", (request, response) => {
 });
 
 app.put("/api/notes/:id", (request, response) => {
-    const body = request.body;
-    const id = Number(request.params.id);
-    const note = notes.find((note) => note.id === id);
+  const body = request.body;
+  const id = Number(request.params.id);
+  const note = notes.find((note) => note.id === id);
 
   const newNote = {
     content: body.content,
@@ -93,8 +94,7 @@ app.put("/api/notes/:id", (request, response) => {
   };
 
   response.json(newNote);
-}
-)
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

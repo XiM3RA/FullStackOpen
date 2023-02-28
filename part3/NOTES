@@ -1,0 +1,21 @@
+Postman- for testing REST-api's
+
+Nodemon- daemon for updating the server when code changes
+         install: npm install --save-dev nodemon
+         modify package.json and start server with npm run dev
+
+Express- for running a webserver, install with: npm install express
+
+Fly.io-  For running the stack on the internet. To use:
+        1) Modify port on index.js to the following:
+            const PORT = process.env.PORT || 3001
+            app.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`)
+            })
+        2) Authenticate via the command line: fly auth login
+        3) Initialize app in the root directory: fly launch
+        4) Check in the browser with command: fly open
+        5) Deploy to production: fly deploy
+
+        Can run "fly logs" to view server logs. Fly creates a file
+        fly.toml that contains the configuration of the server.
