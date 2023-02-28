@@ -13,9 +13,16 @@ mongoose.connect(url)
         console.log('error connecting to MongoDB:', error.message)
     })
 
+// schema uses mongodb builtin validator to make sure content is atleat
+// 5 characters in length. If we attempt to add a note less than 5 char
+// it will throw an exception
 const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
+    content: {
+        type: String,
+        minLength: 5,
+        required: true
+    },
+    important: Boolean
 })
 
 noteSchema.set('toJSON', {

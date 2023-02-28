@@ -15,30 +15,9 @@ mongoose
   });
 
 const noteSchema = new mongoose.Schema({
-  name: {
-      type: String,
-      minLength: 3,
-      required: true
-  },
-  phoneNumber: {
-      type: String,
-      required: true,
-      validate: [
-          {
-              validator: function (s) {
-                  return s && s.length > 8
-              },
-              message: 'phone number too short'
-          },
-          {
-              validator: function (s) {
-                  return /\d{2,3}-\d[0-9]+/.test(s);
-              },
-              message: 'improperly formatted phone number'
-          }
-      ]
-  }
-}); 
+  name: String,
+  phoneNumber: String,
+});
 
 noteSchema.set("toJSON", {
   transform: (document, returnedObject) => {

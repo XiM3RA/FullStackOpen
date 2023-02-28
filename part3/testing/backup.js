@@ -67,8 +67,7 @@ app.get("/", (req, res) => {
 /* This route responds with a JSON format string */
 app.get("/api/notes", (req, res) => {
   Note.find({}).then((notes) => {
-//    res.json(notes);
-    res.json(notes.map(note => note.toJSON()))
+    res.json(notes);
   });
 });
 
@@ -78,7 +77,7 @@ app.get("/api/notes", (req, res) => {
 app.get("/api/notes/:id", (request, response, next) => {
   Note.findById(request.params.id).then((note) => {
     if (note) {
-        response.json(note.toJSON());
+        response.json(note);
     } else {
         response.status(404).end()
     }
