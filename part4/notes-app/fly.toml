@@ -1,9 +1,12 @@
-# fly.toml file generated for phonebook9876 on 2023-02-28T14:19:15-06:00
+# fly.toml file generated for lively-forest-3290 on 2023-02-22T13:27:06-06:00
 
-app = "phonebook9876"
+app = "lively-forest-3290"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
+
+[build]
+  builder = "heroku/buildpacks:20"
 
 [env]
   PORT = "8080"
