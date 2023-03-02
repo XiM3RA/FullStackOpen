@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const Entry = require("./models/entry");
 app.use(cors());
-app.use(express.static("build"));
+//app.use(express.static("build"));
 app.use(express.json());
 
 /* Middleware morgan software, for displaying HTML requests on the console */
