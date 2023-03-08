@@ -8,7 +8,7 @@ if (process.argv.length<3) {
 const password = process.argv[2]
 
 const url =
-  `mongodb+srv://fullstack:${password}@cluster0.zcssndw.mongodb.net/bloglist?retryWrites=true&w=majority`
+  `mongodb+srv://fullstack:${password}@cluster0.zcssndw.mongodb.net/testBloglist?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery',false)
 mongoose.connect(url)
@@ -23,10 +23,10 @@ const noteSchema = new mongoose.Schema({
 const Blog = mongoose.model('Blog', noteSchema)
 
 const blog = new Blog({
-  title: 'Time Cube',
-  author: 'God',
-  url: 'www.ilovebacon.com',
-  likes: 69,
+  title: 'A title',
+  author: 'somebody',
+  url: 'something',
+  likes: 5,
 })
 
 // Save blog entry
