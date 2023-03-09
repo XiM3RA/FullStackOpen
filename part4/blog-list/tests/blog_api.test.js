@@ -101,6 +101,43 @@ test("a blog can be deleted", async () => {
   expect(contents).not.toContain(blogToDelete.title);
 });
 
+test("verifies the unique identifier property is named id", async () => {
+    const blogs = await Blog.find({})
+    expect(blogs[0]._id).toBeDefined()
+})
+
+test("verify if likes prop is missing, defaults to zero", async () => {
+  const newBlog = {
+    title: "async/await simplifies making async calls",
+    author: "true",
+    url: "www.nfl.com",
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogs = await Blog.find({})
+    expect(blogs[2].likes).toEqual(0)
+})
+
+test("verify if title or url props are missing returns 400", async () => {
+    // this should be handled by models/blog.js since these parameters
+    // are required for the DB
+  const newBlog = {
+    url: "placeholder",
+    author: "John Q Public",
+  };
+
+  await await api.post("/api/blogs").send(newBlog).expect(400);
+
+  const blogsAtEnd = await helper.blogsInDb();
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
+})
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
