@@ -4,7 +4,7 @@
   "description": "",
   "main": "email.js",
   "scripts": {
-    "xxx": "NODE_ENV=test node index.js",
+    "xxx": "NODE_ENV=test nodemon index.js",
     "start": "node index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
     "dev": "NODE_ENV=development nodemon index.js"
