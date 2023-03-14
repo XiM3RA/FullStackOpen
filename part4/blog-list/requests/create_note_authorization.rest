@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/blogs
+Content-Type: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZha2VuYW1lMiIsImlkIjoiNjQxMGQzYzMzZjFjNzg1ZGExYjViZjIxIiwiaWF0IjoxNjc4ODI1NTI1fQ.-QgFuSBN3UlHjDDU8Spo-WxSxrMONgtH2826xEB_X6I
+
+{
+    "title" : "Single blog with authentication",
+    "author" : "Not important",
+    "url": "irrelevant"
+}
