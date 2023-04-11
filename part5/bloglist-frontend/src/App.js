@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/Notification";
 import "./App.css";
 
 const App = () => {
@@ -69,6 +70,10 @@ const App = () => {
 
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
+      setErrorMessage(`${blogObject.title} ${blogObject.author}`);
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
       setNewBlog({
         title: "",
         author: "",
@@ -88,40 +93,11 @@ const App = () => {
     });
   }
 
-  const BlogForm = () => (
-    <form onSubmit={addBlog}>
-      title:
-      <input
-        type="text"
-        value={newBlog.title}
-        name="title"
-        onChange={handleBlogChange}
-      />
-      <br></br>
-      author:
-      <input
-        type="text"
-        value={newBlog.author}
-        name="author"
-        onChange={handleBlogChange}
-      />
-      <br></br>
-      url:
-      <input
-        type="text"
-        value={newBlog.url}
-        name="url"
-        onChange={handleBlogChange}
-      />
-      <br></br>
-      <button type="submit">create</button>
-    </form>
-  );
-
   if (user === null) {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={errorMessage} />
         <form onSubmit={handleLogin}>
           username
           <input
@@ -146,6 +122,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={errorMessage} />
       <p className="p-inline">{user.name} logged in</p>
       <button onClick={logOut}>Logout</button>
       <br></br>
