@@ -1,9 +1,38 @@
+import { useState } from 'react'
+
 const BlogForm = ({ addBlog }) => {
+    const [newBlog, setNewBlog] = useState({
+        title: "",
+        author: "",
+        url: "",
+        likes: 0
+    })
+
+    const appendBlog = (event) => {
+        event.preventDefault()
+        addBlog({
+            title: newBlog.title,
+            author: newBlog.author,
+            url: newBlog.url,
+            likes: newBlog.likes
+        })
+        setNewBlog({ title: "", author: "", url: "", likes: 0 })
+    }
+
+    function handleBlogChange(event) {
+        const {name, value} = event.target
+        setNewBlog(prevNewBlog => {
+            return {
+                ...prevNewBlog,
+                [name]: value
+            }
+        })
+    }
 
     return (
       <div>
       <h2>create new</h2>
-        {/*      <form onSubmit={addBlog}>
+        <form onSubmit={appendBlog}>
         title:
         <input
           type="text"
@@ -29,7 +58,7 @@ const BlogForm = ({ addBlog }) => {
         />
         <br></br>
         <button type="submit">create</button>
-      </form> */}
+      </form>
       </div>
     )
 }

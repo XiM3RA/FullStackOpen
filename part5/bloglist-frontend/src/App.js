@@ -60,14 +60,14 @@ const App = () => {
     setUser(null);
   };
 
-  const addBlog = (event) => {
-    event.preventDefault();
+  const addBlog = (blogObject) => {
+/*    event.preventDefault();
     const blogObject = {
       title: newBlog.title,
       author: newBlog.author,
       url: newBlog.url,
       likes: 0,
-    };
+    }; */
 
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
@@ -75,12 +75,6 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
-      setNewBlog({
-        title: "",
-        author: "",
-        url: "",
-        likes: "",
-      });
     });
   };
 
