@@ -1,167 +1,137 @@
-import { useState, useEffect } from "react";
-
-import Note from "./components/Note";
-import noteService from "./services/notes";
-import loginService from "./services/login";
-import Footer from "./components/Footer";
-import Notification from "./components/Notification";
+import { useState, useEffect, useRef } from 'react'
+import Note from './components/Note'
+import Notification from './components/Notification'
+import Footer from './components/Footer'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
+import noteService from './services/notes'
+import loginService from './services/login'
 
 const App = () => {
-  const [notes, setNotes] = useState([]);
-  const [newNote, setNewNote] = useState("");
-  const [showAll, setShowAll] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState([])
+  const [showAll, setShowAll] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const [username, setUsername] = useState('') 
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    noteService.getAll().then((initialNotes) => {
-      setNotes(initialNotes);
-    });
-  }, []);
+    noteService
+      .getAll()
+      .then(initialNotes => {
+        setNotes(initialNotes)
+      })
+  }, [])
 
-  // This hook checks to see if the user information has been set in localStorage
-  // If it has it sends this information to the noteService so the user is automatically
-  // logged in to the application
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedNoteAppUser");
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      noteService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
     }
-  }, []);
+  }, [])
+
+  const noteFormRef = useRef()
 
   const handleLogin = async (event) => {
-    event.preventDefault();
-
-    // If the login is successful, the fields of the login form are
-    // reset and the server's response which contains the token and
-    // the logged in users information is stored in the application's
-    // state "user"
-    // If the login fails, loginService causes an exception and the user
-    // is notified.
+    event.preventDefault()
     try {
       const user = await loginService.login({
-        username,
-        password,
-      });
-
-      // This sets the user in the browsers key-value database. This is specific
-      // to each window open in the browser. Once the value of the key is set,
-      // it can be retrieved with window.localStorage.getItem('loggedNoteAppUser')
-      // removeItem can remove a key. We do this to preserve the users login info
-      // even if the page is reloaded
-      window.localStorage.setItem("loggedNoteAppUser", JSON.stringify(user));
-      noteService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      setErrorMessage("Wrong credentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    }
-  };
-
-  const addNote = (event) => {
-    event.preventDefault();
-    const noteObject = {
-      content: newNote,
-      date: new Date().toISOString(),
-      important: Math.random() > 0.5,
-      id: notes.length + 1,
-    };
-
-    noteService.create(noteObject).then((returnedNote) => {
-      setNotes(notes.concat(returnedNote));
-      setNewNote("");
-    });
-  };
-
-  const handleNoteChange = (event) => {
-    setNewNote(event.target.value);
-  };
-
-  const toggleImportanceOf = (id) => {
-    const note = notes.find((n) => n.id === id);
-    const changedNote = { ...note, important: !note.important };
-
-    noteService
-      .update(id, changedNote)
-      .then((returnedNote) => {
-        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+        username, password,
       })
-      .catch((error) => {
-        console.log(error);
-        alert(`the note '${note.content}' was already deleted from server`);
-        setNotes(notes.filter((n) => n.id !== id));
-      });
-  };
+      noteService.setToken(user.token)
+      window.localStorage.setItem(
+        'loggedNoteappUser', JSON.stringify(user)
+      ) 
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setErrorMessage('wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
 
-  const toggleImportant = () => {
-    setShowAll(!showAll);
-  };
+  const addNote = (noteObject) => {
+    noteService
+      .create(noteObject)
+      .then(returnedNote => {
+        setNotes(notes.concat(returnedNote))
+        noteFormRef.current.toggleVisibility()
+      })
+  }
 
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+  const notesToShow = showAll
+    ? notes
+    : notes.filter(note => note.important)
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  );
-
-  const noteForm = () => (
-    <form onSubmit={addNote}>
-      <input value={newNote} onChange={handleNoteChange} />
-      <button type="submit">save</button>
-    </form>
-  );
+  const toggleImportanceOf = id => {
+      const note = notes.find(n => n.id === id)
+      const changedNote = { ...note, important: !note.important }
+  
+      noteService
+        .update(id, changedNote).then(returnedNote => {
+          setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        })
+        .catch(error => {
+          setErrorMessage(
+            `Note '${note.content}' was already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          setNotes(notes.filter(n => n.id !== id))
+        })
+   }
+  
   return (
     <div>
-      <h1>Notes</h1>
-      <h2>Login</h2>
+      <h1>Notes app</h1>
       <Notification message={errorMessage} />
-      {!user && loginForm()}
-      {user && (
+
+      {!user &&
+        <Togglable buttonLabel="log in">
+          <LoginForm
+            username={username}
+            password={password}
+            handleUsernameChange={({ target }) => setUsername(target.value)}
+            handlePasswordChange={({ target }) => setPassword(target.value)}
+            handleSubmit={handleLogin}
+          />
+        </Togglable>
+      }
+      {user &&
         <div>
           <p>{user.name} logged in</p>
-          {noteForm()}
+          <Togglable buttonLabel="new note" ref={noteFormRef}>
+            <NoteForm createNote={addNote} />
+          </Togglable>
         </div>
-      )}
-      <button onClick={toggleImportant}>Show important</button>
+      }
+ 
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all' }
+        </button>
+      </div> 
       <ul>
-        {notesToShow.map((note) => (
+        {notesToShow.map(note => 
           <Note
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
           />
-        ))}
+        )}
       </ul>
+
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
