@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
@@ -127,7 +128,8 @@ const App = () => {
       <button onClick={logOut}>Logout</button>
       <br></br>
       <br></br>
-      <h2>create new</h2>
+      <BlogForm addBlog={addBlog} />
+      {/*      <h2>create new</h2>
       <form onSubmit={addBlog}>
         title:
         <input
@@ -154,7 +156,7 @@ const App = () => {
         />
         <br></br>
         <button type="submit">create</button>
-      </form>
+      </form> */}
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
