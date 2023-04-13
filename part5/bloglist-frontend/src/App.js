@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, [blogs]);
+  }, []);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -69,6 +69,18 @@ const App = () => {
     });
   };
 
+  const addLike = async (id, blogObject) => {
+    try {
+      const updatedBlog = await blogService.like(id, blogObject);
+      const newBlogs = blogs.map((blog) =>
+        blog.id === id ? updatedBlog : blog
+      );
+      setBlogs(newBlogs);
+    } catch (exception) {
+      setErrorMessage("error" + exception.response.data.error);
+    }
+  };
+
   if (user === null) {
     return (
       <div>
@@ -107,7 +119,7 @@ const App = () => {
         <BlogForm addBlog={addBlog} />
       </Togglable>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLike={addLike} />
       ))}
     </div>
   );
