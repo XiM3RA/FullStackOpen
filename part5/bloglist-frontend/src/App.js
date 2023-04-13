@@ -3,7 +3,7 @@ import Blog from "./components/Blog";
 import BlogForm from "./components/BlogForm";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import Togglable from './components/Togglable';
+import Togglable from "./components/Togglable";
 import Notification from "./components/Notification";
 import "./App.css";
 
@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
@@ -28,7 +28,7 @@ const App = () => {
   }, []);
 
   // This ref will let us change state of the Togglable component from here
-  const blogFormRef = useRef()
+  const blogFormRef = useRef();
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -61,14 +61,13 @@ const App = () => {
   const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
-      blogFormRef.current.toggleVisibility()
+      blogFormRef.current.toggleVisibility();
       setErrorMessage(`${blogObject.title} ${blogObject.author}`);
       setTimeout(() => {
         setErrorMessage(null);
       }, 5000);
     });
   };
-
 
   if (user === null) {
     return (
