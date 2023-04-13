@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, addLike }) => {
+const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   const [toggle, flipToggle] = useState(true);
 
   const blogStyle = {
@@ -20,6 +20,14 @@ const Blog = ({ blog, addLike }) => {
       user: blog.user.id,
     };
     addLike(blog.id, updatedBlog);
+  };
+
+  const Delete = () => {
+    if (loggedUser.username === blog.user.username) {
+      if (window.confirm(`Remove blog ${blog.title}?`)) {
+        removeBlog(blog.id);
+      }
+    }
   };
 
   return (
@@ -46,6 +54,10 @@ const Blog = ({ blog, addLike }) => {
           </button>
           <br></br>
           {blog.user.name}
+          <br></br>
+          <button onClick={Delete} type="text">
+            remove
+          </button>
         </div>
       )}
     </>
