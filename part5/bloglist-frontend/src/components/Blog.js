@@ -33,14 +33,14 @@ const Blog = ({ blog, addLike, removeBlog, loggedUser }) => {
   return (
     <>
       {toggle ? (
-        <div style={blogStyle}>
+        <div style={blogStyle} className="blog">
           {blog.title} {blog.author}
           <button onClick={() => flipToggle(!toggle)} type="text">
             view
           </button>
         </div>
       ) : (
-        <div style={blogStyle}>
+        <div style={blogStyle} className="expandedBlog">
           {blog.title} {blog.author}{" "}
           <button onClick={() => flipToggle(!toggle)} type="text">
             hide

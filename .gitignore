@@ -3,3 +3,4 @@ node_modules/
 TimeSpent
 .env
 .dockerignore
+NOTES.md

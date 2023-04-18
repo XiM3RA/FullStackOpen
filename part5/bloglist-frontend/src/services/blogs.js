@@ -7,7 +7,7 @@ const setToken = (newToken) => {
   token = `Bearer ${newToken}`;
 };
 
-const getAll = () => {
+const getAll = async () => {
   const request = axios.get(baseUrl);
   return request.then((response) => response.data);
 };
@@ -27,7 +27,7 @@ const like = async (id, newObject) => {
   return response.data;
 };
 
-// For removing a blog, user id will be enforced in App.js
+// For removing a blog, user id will be enforced in Blog.js
 const remove = async (id) => {
   const config = {
     headers: { Authorization: token },
